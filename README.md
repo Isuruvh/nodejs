@@ -1,67 +1,85 @@
-# Okta Event Hook Demo
+# Okta Hook Demo Project
 
-This project is a simple Node.js Express app that listens for Okta user lifecycle event webhooks and logs when a user is created.
+This workspace contains multiple small Node.js Express services used to test different Okta hook types locally with ngrok.
 
-## Features
+## Included services
 
-- Serves a basic HTML page at `/`
-- Handles Okta verification requests at `/userCreated`
-- Receives `POST` requests from Okta when a user is created
-- Logs the created user email to the terminal
-- Exposes the app through ngrok for Okta testing
+- `server.js` – user-created event webhook demo
+- `register.js` – registration hook demo
+- `server1.js` – progressive profile hook demo
+- `server-auth.js` – protected auth demo for later use
 
-## Local app
+## Local ports
 
-The server listens on:
-
-- http://localhost:8082
-
-## Routes
-
-- `GET /` -> serves the homepage
-- `GET /userCreated` -> responds with the Okta verification payload
-- `POST /userCreated` -> processes the Okta event payload
+- http://localhost:8082 – main event hook server
+- http://localhost:8086 – registration hook server
+- http://localhost:8087 – progressive profile hook server
+- http://localhost:8083 – protected auth demo server
 
 ## Run locally
 
-```bash
+### Event hook demo
+```powershell
 cd C:\Users\isuru\nodejs
 node server.js
 ```
 
-## Start ngrok tunnel
+### Registration hook demo
+```powershell
+cd C:\Users\isuru\nodejs
+node register.js
+```
 
+### Progressive profile hook demo
+```powershell
+cd C:\Users\isuru\nodejs
+node server1.js
+```
+
+### Protected auth demo
+```powershell
+cd C:\Users\isuru\nodejs
+node server-auth.js
+```
+
+## Start ngrok tunnels
+
+### Event hook
 ```powershell
 cd C:\Users\isuru\nodejs
 ngrok http 8082 --config "C:\Users\isuru\AppData\Local\ngrok\ngrok.yml"
 ```
 
-## Public URL used for testing
-
-```text
-https://esteemed-omit-creme.ngrok-free.dev
+### Registration hook
+```powershell
+cd C:\Users\isuru\nodejs
+ngrok http 8086 --config "C:\Users\isuru\AppData\Local\ngrok\ngrok.yml"
 ```
 
-Okta webhook endpoint used for testing:
-
-```text
-https://esteemed-omit-creme.ngrok-free.dev/userCreated
+### Progressive profile hook
+```powershell
+cd C:\Users\isuru\nodejs
+ngrok http 8087 --config "C:\Users\isuru\AppData\Local\ngrok\ngrok.yml"
 ```
 
-## Okta event hook behavior
+## Relevant Okta endpoints
 
-When Okta sends a user creation event, the server reads the payload and prints a message like:
-
-```text
-The user john.doe@example.com has been added to the Okta org!
-```
+- Event hook: `/userCreated`
+- Registration hook: `/registrationHookSSR`
+- Progressive profile hook: `/registrationHookPP`
 
 ## Notes
 
-- The app is intentionally simple and designed for local testing with Okta event hooks.
-- The ngrok tunnel is required so Okta can reach the app from the internet.
-- The app should be running before configuring Okta webhooks.
+- Only one app should be bound to a port at a time.
+- If a port is already in use, stop the old Node process before starting a new one.
+- The demo hooks are intentionally simple and designed for local testing with Okta.
+- The auth demo is kept separate so it can be used later without interfering with the hook testing flow.
 
 ## Project status
 
-This project successfully demonstrated a working Okta user-created event hook flow using a public ngrok tunnel.
+The project currently contains working local hook demos for:
+- user-created event hooks
+- registration hooks
+- progressive profile hooks
+
+The next step is to validate the progressive profile rule with the real Okta payload and refine the employee number check against the exact field mapping.
