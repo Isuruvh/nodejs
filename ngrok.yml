@@ -1,1 +1,8 @@
-authtoken:3GcjhE2t0Z3EXri6W784Ip6kfGD_2QMPjqJPMFrVeXUjPaHxe
+version: "3"
+agent:
+  authtoken: 3GcjhE2t0Z3EXri6W784Ip6kfGD_2QMPjqJPMFrVeXUjPaHxe
+
+tunnels:
+  my_app:
+    proto: http
+    addr: 8086
