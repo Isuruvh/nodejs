@@ -46,7 +46,9 @@ app.post('/registrationHookSSR', async (request, response) => {
 
   if (request.body.requestType === 'self.service.registration') {
     var emailRegistration = (request.body.data.userProfile['login']).split('@');
-    if (emailRegistration[1].includes('okta.com')) {
+    var emailDomain = (emailRegistration[1] || '').toLowerCase();
+    var allowedEmailDomains = ['okta.com'];
+    if (allowedEmailDomains.includes(emailDomain)) {
       console.log(request.body.data.userProfile['firstName'] + " " + request.body.data.userProfile['lastName'] + " " + request.body.data.userProfile['email'] + " has registered!");
       returnValue = {
         'commands':[
