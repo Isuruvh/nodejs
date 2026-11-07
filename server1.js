@@ -82,7 +82,9 @@ app.post('/registrationHookSSRandPP', async (request, response) => {
   } else {
     var emailRegistration = (request.body.data.userProfile['email']).split('@');
     var employeeNumberSSR = (request.body.data.userProfile['employeeNumber']);
-    if (emailRegistration[1].includes('okta.com') && (employeeNumberSSR && employeeNumberSSR.length === 4)){
+    var emailDomain = (emailRegistration[1] || '').toLowerCase();
+    var isAllowedEmailDomain = (emailDomain === 'okta.com' || emailDomain.endsWith('.okta.com'));
+    if (isAllowedEmailDomain && (employeeNumberSSR && employeeNumberSSR.length === 4)){
       console.log(request.body.data.userProfile['firstName'] + " " + request.body.data.userProfile['lastName'] + " " + request.body.data.userProfile['email'] + " has registered!");
       returnValue = {
         'commands':[
